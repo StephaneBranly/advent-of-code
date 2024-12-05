@@ -10,8 +10,9 @@ for line in input():
     elif ',' in line:
         instructions.append([int(p) for p in line.split(',')])
   
-def is_valid_instruction(instruction):
-    for index, page in enumerate(instruction):
+def is_valid_instruction(instruction, start_index=0):
+    for index, page in enumerate(instruction[start_index:]):
+        index+=start_index
         for next_index, next_page in enumerate(instruction[index+1:]):
             if page in constraints.get(next_page, []):
                 return False, index, next_index + index + 1
@@ -25,7 +26,7 @@ for instruction in instructions:
         instruction = instruction.copy()
         while not valid: # we suppose that swapping will lead to a valid solution
             instruction[i], instruction[j] = instruction[j], instruction[i]
-            valid, i, j = is_valid_instruction(instruction)
+            valid, i, j = is_valid_instruction(instruction, i)
         sum += instruction[math.floor(len(instruction) / 2)]
 
 print(sum)
