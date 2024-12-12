@@ -37,14 +37,16 @@ for line in input():
     i+=1
 continuer, count = True, 1
 while continuer:
-    next_y, next_x = agent['position'][0] + directions[agent['direction']]['vector'][0], agent['position'][1] + directions[agent['direction']]['vector'][1]
+    x, y = agent['position']
+    next_y, next_x = y + directions[agent['direction']]['vector'][0], x + directions[agent['direction']]['vector'][1]
     if next_y < 0 or next_x < 0 or next_y >= len(map) or next_x >= len(map[0]):
         continuer = False
     elif map[next_y][next_x] == '#':
+        map[y]= map[y][:x] + '+' + map[next_y][x + 1:]
         agent['direction'] = directions[agent['direction']]['turn']
     else:
         if map[next_y][next_x] == '.':
-            map[next_y] = map[next_y][:next_x] + 'X' + map[next_y][next_x + 1:]
+            map[next_y] = map[next_y][:next_x] + directions[agent['direction']]['marker'] + map[next_y][next_x + 1:]
             count += 1
         agent['position'] = (next_y, next_x)
     
